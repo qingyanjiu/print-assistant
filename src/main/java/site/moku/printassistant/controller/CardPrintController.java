@@ -43,6 +43,15 @@ public class CardPrintController {
         return printInfoService.getFromRedis(printKey);
     }
 
+    @RequestMapping("save-data")
+    @ResponseBody
+    public Map saveData(String printKey, String imgListJsonStr) {
+        Map map = new HashMap();
+        printInfoService.saveToRedis(printKey, imgListJsonStr);
+        map.put("success",true);
+        return map;
+    }
+
     @RequestMapping("auto-printer")
     public String cardAutoPrint(Model model, CardPrinterParams printerParams) {
         List<Map<String, String>> imgs = new ArrayList();
@@ -92,7 +101,6 @@ public class CardPrintController {
 
             imgs = imgs.stream().sorted((m1, m2) -> m1.get("order").compareTo(m2.get("order"))).collect(Collectors.toList());
             imgList = imgs.stream().map(m -> m.get("src")).collect(Collectors.toList());
-            printInfoService.saveToRedis(printerParams.getPath(), JSON.toJSONString(imgList));
         }
         model.addAttribute("imgs", imgList);
         model.addAttribute("printerParams", printerParams);

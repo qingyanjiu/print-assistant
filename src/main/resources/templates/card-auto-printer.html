@@ -8,13 +8,15 @@
     <title>卡片打印小助手</title>
 </head>
 <body>
-<div style="page-break-before:always;" id="main">
+
+<div style="page-break-before:always;margin-top:10mm" id="main">
 
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
         crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script th:inline="javascript">
     //<![CDATA[
 
@@ -37,6 +39,36 @@
 
     imgs = [[${imgs}]];
 
+    $(function(){
+        $("#main").click(function(){
+            swal("请输入名称保存打印历史",{
+                buttons: {
+                    cancel: false,
+                    confirm: true
+                },
+                content: "input"
+            }).then(function(value) {
+                if(value) {
+                    $.ajax({
+                        url: 'save-data',
+                        type: 'POST',
+                        data: {
+                            printKey: value,
+                            imgListJsonStr: JSON.stringify(imgs)
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            swal('保存成功');
+                        },
+                        error: function (e) {
+                            swal('保存失败');
+                        }
+                    });
+                }
+            });
+        });
+    });
+
     for (var i = 0; i < imgs.length; i++) {
         var row = Math.floor(i / numberPerRow);
         var column = i % numberPerRow;
@@ -46,6 +78,7 @@
             'width:' + width + 'mm;' +
             'height:' + height + 'mm" ' +
             'src="' + imgs[i] + '"/>';
+
         $("#main").append(html);
     }
 

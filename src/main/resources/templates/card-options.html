@@ -101,7 +101,6 @@
                     data: {},
                     dataType: "json",
                     success: function (res) {
-                        console.log(res);
                         if (res != null && res.length > 0) {
                             $("#history").show();
                             var html = "";
@@ -163,7 +162,7 @@
             alert("起始图片号码");
             return;
         }
-        window.open("auto-printer" +
+        var openUrl = "auto-printer" +
             "?path=" + encodeURI(path) +
             "&imgNumber=" + imgNumber +
             "&start=" + start +
@@ -171,9 +170,11 @@
             "&imgPrefix=" + encodeURI(imgPrefix) +
             "&width=" + width +
             "&height=" + height +
-            "&history=" + encodeURI(history) +
-            "&times=" + times
-        );
+            "&times=" + times;
+        if(typeof(history) != 'undefined' && history != null) {
+            openUrl += "&history=" + encodeURI(history);
+        }
+        window.open(openUrl);
     });
 </script>
 </html>
