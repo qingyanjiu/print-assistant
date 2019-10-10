@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>卡片打印小助手</title>
+</head>
+<body>
+<div style="page-break-before:always;" id="main">
+
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    //<![CDATA[
+
+    var params = [[${printerParams}]];
+
+     function getParam(paramName) {
+        return params[paramName];
+    }
+
+
+    var numberPerRow = getParam("numberPerRow");
+    var width = Number(getParam("width"));
+    var height = Number(getParam("height"));
+    var times = Number(getParam("times"));
+
+    var defaultWidth = 297;
+    var defaultHeight = 210;
+
+    var imgs = [];
+
+    imgs = [[${imgs}]];
+
+    for (var i = 0; i < imgs.length; i++) {
+        var row = Math.floor(i / numberPerRow);
+        var column = i % numberPerRow;
+        var html = '<img style="position:absolute;border:solid #DDD 1px;' +
+            'top:' + row * (height + 0.2) + 'mm;' +
+            'left:' + column * (width + 0.2) + 'mm;' +
+            'width:' + width + 'mm;' +
+            'height:' + height + 'mm" ' +
+            'src="' + imgs[i] + '"/>';
+        $("#main").append(html);
+    }
+
+    //]]>
+</script>
+</html>

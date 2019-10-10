@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: print-assistant
+  thymeleaf:
+    cache: false
+    check-template: true
+  redis:
+    host: 106.75.119.242
+    database: 0
+    port: 34567
+    timeout: 3000
+
+server:
+  port: 8000
+
+

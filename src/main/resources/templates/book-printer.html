@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>绘本打印小助手</title>
+</head>
+<body>
+<div id="main">
+
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    //<![CDATA[
+
+    var params = [[${printerParams}]];
+
+    function getParam(paramName) {
+        return params[paramName];
+    }
+
+    var path = getParam("path");
+    var pageNumber = Number(getParam("pageNumber"));
+    var page = Number(getParam("page"));
+    var side = getParam("side");
+    var imgWidth = Number(getParam("width"));
+    var imgHeight = Number(getParam("height"));
+
+    var defaultWidth = 297;
+    var defaultHeight = 210;
+
+    var imgs = [];
+
+    imgs = [[${imgs}]];
+
+    for (var i = 0; i < imgs.length; i++) {
+        var src = imgs[i].path;
+        var name = imgs[i].name;
+
+        var width = defaultWidth / 2;
+        var height = width / imgWidth * imgHeight;
+        var html = '';
+        if(this.name % 2 != 0) {
+            html = '<img style="position:absolute;' +
+                'top:0;' +
+                'left:' + width + 'mm;' +
+                'width:' + width + 'mm;' +
+                'height:' + height + 'mm" ' +
+                'src="' + src + '"/>';
+            html += '<div style="position:absolute;top:'+(height-8)+'mm;left:'+(width*2-10)+'mm">'+name+'</div>';
+        }
+        else {
+            html = '<img style="position:absolute;' +
+                'top:0;' +
+                'left:0;' +
+                'width:' + width + 'mm;' +
+                'height:' + height + 'mm" ' +
+                'src="' + src + '"/>';
+            html += '<div style="position:absolute;top:'+(height-8)+'mm;left:5mm">'+name+'</div>'
+        }
+        $("#main").append(html);
+    }
+
+    //]]>
+</script>
+</html>
