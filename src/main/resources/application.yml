@@ -8,10 +8,16 @@ spring:
     host: 106.75.119.242
     database: 0
     port: 34567
-    timeout: 3000
+    timeout: 300000
 
 server:
   port: 8000
+  tomcat:
+    max-http-post-size: -1
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
 
 print:
   history:
