@@ -5,10 +5,10 @@ spring:
     cache: false
     check-template: true
   redis:
-    host: 106.75.119.242
+    host: pass.moku.site
     database: 0
     port: 34567
-    timeout: 300000
+    timeout: 120000
 
 server:
   port: 8000
