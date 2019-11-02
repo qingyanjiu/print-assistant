@@ -5,6 +5,7 @@
 package site.moku.printassistant.controller;
 
 import com.alibaba.fastjson.JSON;
+import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,12 +57,16 @@ public class CardPrintController {
     public String cardAutoPrint(Model model, CardPrinterParams printerParams) {
         List<Map<String, String>> imgs = new ArrayList();
         List imgList = new ArrayList();
+        File back = null;
+        if(!StringUtil.isNullOrEmpty(printerParams.getBackPath()))
+            back = new File(printerParams.getBackPath());
         String history = printerParams.getHistory();
         if (!StringUtils.isEmpty(history)) {
             String hStr = printInfoService.getFromRedis(history);
             imgList = JSON.parseObject(hStr, List.class);
         } else {
             int startIndex = printerParams.getStart() - 1;
+            int numberPerRow = printerParams.getNumberPerRow();
             File file = new File(printerParams.getPath());
             if (file.isDirectory()) {
                 File[] children = file.listFiles(name -> name.getName().startsWith(printerParams.getImgPrefix()));
@@ -78,7 +83,7 @@ public class CardPrintController {
                                         order = order.split(printerParams.getImgPrefix())[1];
                                     }
                                     map.put("src", "data:image;base64," + Tools.encodeBase64File(child));
-                                    map.put("order", order);
+//                                    map.put("order", order);
                                     imgs.add(map);
                                 } else {
                                     Map map = new HashMap();
@@ -88,7 +93,7 @@ public class CardPrintController {
                                         order = order.split(printerParams.getImgPrefix())[1];
                                     }
                                     map.put("src", "data:image;base64," + Tools.encodeBase64File(child));
-                                    map.put("order", order);
+//                                    map.put("order", order);
                                     for (int j = 0; j < number; j++) {
                                         imgs.add(map);
                                     }
@@ -96,10 +101,16 @@ public class CardPrintController {
                             }
                         }
                     }
+                    if(back != null && (index+1) % numberPerRow == 0) {
+                        Map map = new HashMap();
+                        map.put("src", "data:image;base64," + Tools.encodeBase64File(back));
+                        for(int i=0;i<numberPerRow;i++)
+                            imgs.add(map);
+                    }
                 }
             }
 
-            imgs = imgs.stream().sorted((m1, m2) -> m1.get("order").compareTo(m2.get("order"))).collect(Collectors.toList());
+//            imgs = imgs.stream().sorted((m1, m2) -> m1.get("order").compareTo(m2.get("order"))).collect(Collectors.toList());
             imgList = imgs.stream().map(m -> m.get("src")).collect(Collectors.toList());
         }
         model.addAttribute("imgs", imgList);

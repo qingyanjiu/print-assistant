@@ -7,6 +7,7 @@ package site.moku.printassistant.vo;
 public class CardPrinterParams {
 
     private String path;
+    private String backPath;
     private int imgNumber;
     private int numberPerRow;
     private String imgPrefix;
@@ -15,6 +16,14 @@ public class CardPrinterParams {
     private String history;
     private int times;
     private int start;
+
+    public String getBackPath() {
+        return backPath;
+    }
+
+    public void setBackPath(String backPath) {
+        this.backPath = backPath;
+    }
 
     public String getHistory() {
         return history;

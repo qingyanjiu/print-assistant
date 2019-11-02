@@ -21,6 +21,12 @@
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
+                <span class="input-group-text">卡背路径(如果填写了卡背路径，会排版成正反打)</span>
+            </div>
+            <input id="backPath" type="text" class="form-control" placeholder="卡背路径" aria-label="卡背路径">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text">图片数量</span>
             </div>
             <input id="imgNumber" value="200" type="text" class="form-control" placeholder="图片数量" aria-label="图片数量">
@@ -124,6 +130,7 @@
 
     $("#submit").click(function () {
         var path = $("#path").val();
+        var backPath = $("#backPath").val();
         var imgNumber = $("#imgNumber").val();
         var numberPerRow = $("#numberPerRow").val();
         var imgPrefix = $("#imgPrefix").val();
@@ -164,6 +171,7 @@
         }
         var openUrl = "auto-printer" +
             "?path=" + encodeURI(path) +
+            "&backPath=" + encodeURI(backPath) +
             "&imgNumber=" + imgNumber +
             "&start=" + start +
             "&numberPerRow=" + numberPerRow +
