@@ -2,7 +2,7 @@
  * @author louisliu
  */
 
-package site.moku.download;
+package site.moku.tools;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class TestDownload {
+public class DownloadHelper {
 
     static final ExecutorService es = Executors.newFixedThreadPool(10);
 
