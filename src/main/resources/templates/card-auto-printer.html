@@ -31,6 +31,7 @@
     var width = Number(getParam("width"));
     var height = Number(getParam("height"));
     var times = Number(getParam("times"));
+    var lineWidth = getParam("lineWidth");
 
     var defaultWidth = 297;
     var defaultHeight = 210;
@@ -72,7 +73,7 @@
     for (var i = 0; i < imgs.length; i++) {
         var row = Math.floor(i / numberPerRow);
         var column = i % numberPerRow;
-        var html = '<img style="position:absolute;border:solid #FFF 1mm;' +
+        var html = '<img style="position:absolute;border:solid #BBB '+lineWidth+';' +
             'top:' + row * (height + 0.2) + 'mm;' +
             'left:' + column * (width + 0.2) + 'mm;' +
             'width:' + width + 'mm;' +

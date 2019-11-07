@@ -67,6 +67,12 @@
             </div>
             <input id="times" value="1" type="text" class="form-control" placeholder="打印份数" aria-label="打印份数">
         </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">图片间距（带单位，如1px或者1mm）</span>
+            </div>
+            <input id="lineWidth" value="1px" type="text" class="form-control" placeholder="图片间距" aria-label="图片间距">
+        </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -137,6 +143,7 @@
         var width = $("#width").val();
         var height = $("#height").val();
         var times = $("#times").val();
+        var lineWidth = $("#lineWidth").val();
         var start = $("#start").val();
         var history = $("#history").val();
         if (path == '') {
@@ -178,7 +185,8 @@
             "&imgPrefix=" + encodeURI(imgPrefix) +
             "&width=" + width +
             "&height=" + height +
-            "&times=" + times;
+            "&times=" + times +
+            "&lineWidth=" + lineWidth;
         if(typeof(history) != 'undefined' && history != null) {
             openUrl += "&history=" + encodeURI(history);
         }

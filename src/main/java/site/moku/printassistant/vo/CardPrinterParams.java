@@ -15,6 +15,7 @@ public class CardPrinterParams {
     private String height;
     private String history;
     private int times;
+    private String lineWidth;
     private int start;
 
     public String getBackPath() {
@@ -95,5 +96,13 @@ public class CardPrinterParams {
 
     public void setStart(int start) {
         this.start = start;
+    }
+
+    public String getLineWidth() {
+        return lineWidth;
+    }
+
+    public void setLineWidth(String lineWidth) {
+        this.lineWidth = lineWidth;
     }
 }
