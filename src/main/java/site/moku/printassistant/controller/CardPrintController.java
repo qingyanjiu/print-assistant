@@ -101,11 +101,22 @@ public class CardPrintController {
                             }
                         }
                     }
-                    if(back != null && (index+1) % numberPerRow == 0) {
+                    //每到每行最后一个图片出现时，加一行卡背，或者最后一行最后一个元素出现时，加一行卡背
+                    if(back != null && (index+1) % numberPerRow == 0 || index == childList.size() - 1) {
                         Map map = new HashMap();
                         map.put("src", "data:image;base64," + Tools.encodeBase64File(back));
-                        for(int i=0;i<numberPerRow;i++)
+                        int n = (index+1) % numberPerRow;
+                        if(n == 0)
+                            n = numberPerRow;
+                        //补足剩余的几个卡位为空图片
+                        for(int e = 0;e<numberPerRow-n;e++){
+                            Map empty = new HashMap();
+                            empty.put("src", "");
+                            imgs.add(empty);
+                        }
+                        for(int i=0;i<n;i++) {
                             imgs.add(map);
+                        }
                     }
                 }
             }
