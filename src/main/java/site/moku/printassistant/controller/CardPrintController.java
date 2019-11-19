@@ -58,6 +58,8 @@ public class CardPrintController {
         List<Map<String, String>> imgs = new ArrayList();
         List imgList = new ArrayList();
         File back = null;
+        int total = printerParams.getImgNumber();
+
         if(!StringUtil.isNullOrEmpty(printerParams.getBackPath()))
             back = new File(printerParams.getBackPath());
         String history = printerParams.getHistory();
@@ -65,13 +67,13 @@ public class CardPrintController {
             String hStr = printInfoService.getFromRedis(history);
             imgList = JSON.parseObject(hStr, List.class);
         } else {
-            int startIndex = printerParams.getStart() - 1;
+            int startIndex = printerParams.getStart();
             int numberPerRow = printerParams.getNumberPerRow();
             File file = new File(printerParams.getPath());
             if (file.isDirectory()) {
                 File[] children = file.listFiles(name -> name.getName().startsWith(printerParams.getImgPrefix()));
                 List<File> childList = Arrays.asList(children);
-                for (int index = 0; index < childList.size(); index++) {
+                for (int index = 0; index < Math.max(childList.size(),total); index++) {
                     File child = childList.get(index);
                     if (child.isFile()) {
                         for (int i = 0; i < printerParams.getTimes(); i++) {

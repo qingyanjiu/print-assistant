@@ -16,7 +16,7 @@ public class CardPrinterParams {
     private String history;
     private int times;
     private String lineWidth;
-    private int start;
+    private int start = 0;
 
     public String getBackPath() {
         return backPath;
