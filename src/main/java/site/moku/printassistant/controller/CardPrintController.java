@@ -67,13 +67,13 @@ public class CardPrintController {
             String hStr = printInfoService.getFromRedis(history);
             imgList = JSON.parseObject(hStr, List.class);
         } else {
-            int startIndex = printerParams.getStart();
+            int startIndex = printerParams.getStart() - 1;
             int numberPerRow = printerParams.getNumberPerRow();
             File file = new File(printerParams.getPath());
             if (file.isDirectory()) {
                 File[] children = file.listFiles(name -> name.getName().startsWith(printerParams.getImgPrefix()));
                 List<File> childList = Arrays.asList(children);
-                for (int index = 0; index < Math.max(childList.size(),total); index++) {
+                for (int index = 0; index < Math.min(childList.size(),total); index++) {
                     File child = childList.get(index);
                     if (child.isFile()) {
                         for (int i = 0; i < printerParams.getTimes(); i++) {

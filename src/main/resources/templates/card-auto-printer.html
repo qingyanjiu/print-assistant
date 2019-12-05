@@ -75,7 +75,7 @@
         var column = i % numberPerRow;
         //反排
         if(params.reverse == "1") {
-            column = (numberPerRow - 1 - i) % numberPerRow;
+            column = numberPerRow - 1 - i% numberPerRow;
         }
         var html = '<img style="position:absolute;border:solid #BBB '+lineWidth+';' +
             'top:' + row * (height + 0.2) + 'mm;' +
