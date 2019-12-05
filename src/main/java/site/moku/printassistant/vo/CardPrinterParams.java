@@ -17,6 +17,15 @@ public class CardPrinterParams {
     private int times;
     private String lineWidth;
     private int start = 0;
+    private String reverse;
+
+    public String getReverse() {
+        return reverse;
+    }
+
+    public void setReverse(String reverse) {
+        this.reverse = reverse;
+    }
 
     public String getBackPath() {
         return backPath;
