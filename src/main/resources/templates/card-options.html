@@ -76,6 +76,20 @@
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
+                <span class="input-group-text">反排</span>
+            </div>
+            <div class="radio-group" style="padding-top:5px;padding-left:2rem">
+                <label class="radio-inline">
+                    <input type="radio" name="reverse" checked value="0">&nbsp;否
+                </label>
+                <label class="radio-inline" style="margin-right:1rem">
+                    <input type="radio" name="reverse" value="1">&nbsp;是
+                </label>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text">从云端打印模板直接打印?</span>
             </div>
             <div class="radio-group" style="padding-top:5px;padding-left:2rem">
@@ -146,6 +160,7 @@
         var lineWidth = $("#lineWidth").val();
         var start = $("#start").val();
         var history = $("#history").val();
+        var reverse = $("#reverse").val();
         if (path == '') {
             if(typeof(history) == 'undefined' || history == null) {
                 alert("请输入文件路径");
@@ -186,6 +201,7 @@
             "&width=" + width +
             "&height=" + height +
             "&times=" + times +
+            "&reverse=" + reverse +
             "&lineWidth=" + lineWidth;
         if(typeof(history) != 'undefined' && history != null) {
             openUrl += "&history=" + encodeURI(history);
