@@ -160,7 +160,7 @@
         var lineWidth = $("#lineWidth").val();
         var start = $("#start").val();
         var history = $("#history").val();
-        var reverse = $("#reverse").val();
+        var reverse = $("[name='reverse']:checked").val();
         if (path == '') {
             if(typeof(history) == 'undefined' || history == null) {
                 alert("请输入文件路径");
