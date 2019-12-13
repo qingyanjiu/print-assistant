@@ -90,6 +90,27 @@
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
+                <span class="input-group-text">出血宽度(mm)</span>
+            </div>
+            <input id="bleedWidth" value="5" type="number" class="form-control" placeholder="出血宽度" aria-label="出血宽度">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">出血颜色</span>
+            </div>
+            <input id="bleedColor" value="#FFFFFF" type="color" class="form-control" placeholder="出血颜色" aria-label="出血颜色">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">左侧偏移(mm)</span>
+            </div>
+            <input id="leftOffset" value="0" type="number" class="form-control" placeholder="左侧偏移" aria-label="左侧偏移">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text">从云端打印模板直接打印?</span>
             </div>
             <div class="radio-group" style="padding-top:5px;padding-left:2rem">
@@ -161,6 +182,9 @@
         var start = $("#start").val();
         var history = $("#history").val();
         var reverse = $("[name='reverse']:checked").val();
+        var bleedWidth = $("#bleedWidth").val();
+        var bleedColor = $("#bleedColor").val().split("#")[1];
+        var leftOffset = $("#leftOffset").val();
         if (path == '') {
             if(typeof(history) == 'undefined' || history == null) {
                 alert("请输入文件路径");
@@ -202,6 +226,9 @@
             "&height=" + height +
             "&times=" + times +
             "&reverse=" + reverse +
+            "&bleedWidth=" + bleedWidth +
+            "&bleedColor=" + bleedColor +
+            "&leftOffset=" + leftOffset +
             "&lineWidth=" + lineWidth;
         if(typeof(history) != 'undefined' && history != null) {
             openUrl += "&history=" + encodeURI(history);

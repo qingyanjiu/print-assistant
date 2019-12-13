@@ -32,6 +32,9 @@
     var height = Number(getParam("height"));
     var times = Number(getParam("times"));
     var lineWidth = getParam("lineWidth");
+    var bleedColor = getParam("bleedColor");
+    var bleedWidth = getParam("bleedWidth");
+    var leftOffset = getParam("leftOffset");
 
     var defaultWidth = 297;
     var defaultHeight = 210;
@@ -41,6 +44,9 @@
     imgs = [[${imgs}]];
 
     $(function(){
+
+        $("body").css("background",'#'+bleedColor);
+
         $("#main").click(function(){
             swal("请输入要保存的打印模板名称",{
                 buttons: {
@@ -77,12 +83,15 @@
         if(params.reverse == "1") {
             column = numberPerRow - 1 - i% numberPerRow;
         }
-        var html = '<img style="position:absolute;border:solid #BBB '+lineWidth+';' +
+
+        var html = '<img style="position:absolute;border:solid #BBB '+lineWidth+ ';' +
             'top:' + row * (height + 0.2) + 'mm;' +
             'left:' + column * (width + 0.2) + 'mm;' +
             'width:' + width + 'mm;' +
-            'height:' + height + 'mm" ' +
-            'src="' + imgs[i] + '"/>';
+            'height:' + height + 'mm;' +
+            'margin-top:' + bleedWidth + 'mm;' +
+            'margin-left:' + (10+leftOffset) + 'mm;" ' +
+            ' src="' + imgs[i] + '"/>';
 
         $("#main").append(html);
     }

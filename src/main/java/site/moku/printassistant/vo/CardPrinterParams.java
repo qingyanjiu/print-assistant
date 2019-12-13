@@ -16,8 +16,11 @@ public class CardPrinterParams {
     private String history;
     private int times;
     private String lineWidth;
-    private int start = 0;
+    private int start;
+    private int bleedWidth;
+    private int leftOffset;
     private String reverse;
+    private String bleedColor;
 
     public String getReverse() {
         return reverse;
@@ -113,5 +116,29 @@ public class CardPrinterParams {
 
     public void setLineWidth(String lineWidth) {
         this.lineWidth = lineWidth;
+    }
+
+    public int getBleedWidth() {
+        return bleedWidth;
+    }
+
+    public void setBleedWidth(int bleedWidth) {
+        this.bleedWidth = bleedWidth;
+    }
+
+    public int getLeftOffset() {
+        return leftOffset;
+    }
+
+    public void setLeftOffset(int leftOffset) {
+        this.leftOffset = leftOffset;
+    }
+
+    public String getBleedColor() {
+        return bleedColor;
+    }
+
+    public void setBleedColor(String bleedColor) {
+        this.bleedColor = bleedColor;
     }
 }
