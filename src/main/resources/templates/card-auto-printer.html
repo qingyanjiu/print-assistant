@@ -79,14 +79,16 @@
     for (var i = 0; i < imgs.length; i++) {
         var row = Math.floor(i / numberPerRow);
         var column = i % numberPerRow;
+
+        var position = 'left:' + (column * width) + 'mm;';
         //反排
         if(params.reverse == "1") {
-            column = numberPerRow - 1 - i% numberPerRow;
+            position = 'right:' + (column * width) + 'mm;';
         }
 
         var html = '<img style="position:absolute;border:solid #BBB '+lineWidth+ ';' +
             'top:' + row * (height + 0.2) + 'mm;' +
-            'left:' + column * (width + 0.2) + 'mm;' +
+            position +
             'width:' + width + 'mm;' +
             'height:' + height + 'mm;' +
             'margin-top:' + bleedWidth + 'mm;' +
