@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,5 +32,6 @@ public class TestPrintInfoService {
     @Test
     public void testGetHistoryFromRedis() {
         Assert.assertNull(printInfoService.getHistoryFromRedis());
+        verify(printInfoService,times(1)).getHistoryFromRedis();
     }
 }
