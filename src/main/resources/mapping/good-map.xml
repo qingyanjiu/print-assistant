@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.moku.printassistant.dao.GoodDao">
+    <update id="sell" parameterType="int">
+        update ms set count=count-1 where good_id = #{id} and count > 0
+    </update>
+
+    <update id="sellWithVersion" parameterType="map">
+        update ms set count=count-1, version=${version}+1 where good_id = #{id} and version=#{version}
+    </update>
+
+    <select id="qryVersion" parameterType="int" resultType="map">
+        select version,count from ms where good_id=#{id}
+    </select>
+</mapper>

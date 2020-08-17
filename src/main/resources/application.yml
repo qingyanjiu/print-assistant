@@ -5,10 +5,26 @@ spring:
     cache: false
     check-template: true
   redis:
-    host: pass.moku.site
+    host: 106.75.14.33
     database: 0
-    port: 34567
+    port: 36379
     timeout: 120000
+    lettuce:
+      pool:
+        max-active: 10 #连接池最大连接数
+        max-wait: -1 #连接池最大阻塞时间
+        max-idle: 5 #连接池中最大空闲连接
+        min-idle: 1 #连接池中最小空闲连接
+
+  datasource:
+    username: root
+    password: 19831226lc
+    url: jdbc:mysql://pass.moku.site:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: site.moku.printassistant.dao
 
 server:
   port: 8000
@@ -23,5 +39,6 @@ print:
   history:
     expire:
       days: 7
+
 
 
