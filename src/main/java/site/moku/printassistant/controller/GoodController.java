@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import site.moku.printassistant.dao.GoodDao;
 import site.moku.printassistant.service.GoodService;
+import site.moku.printassistant.utils.NoStorageException;
 
 @Controller
 @RequestMapping("/good")
@@ -26,6 +27,19 @@ public class GoodController {
         goodService.sellWithVersion(id);
         responseEntity = ResponseEntity.ok("success");
 //        logger.info("sell success, good id: {}", id);
+        return responseEntity;
+    }
+
+    @RequestMapping("decreaseStorage")
+    @ResponseBody
+    public ResponseEntity decreaseStorage(String goodName) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            goodService.decreaseStorageWithRedis(goodName);
+            responseEntity = ResponseEntity.ok("success");
+        } catch (NoStorageException e) {
+            responseEntity = ResponseEntity.ok("failed");
+        }
         return responseEntity;
     }
 }

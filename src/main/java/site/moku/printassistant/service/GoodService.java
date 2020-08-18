@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.moku.printassistant.dao.GoodDao;
+import site.moku.printassistant.utils.NoStorageException;
+import site.moku.printassistant.utils.RedisTools;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,9 @@ public class GoodService {
 
     @Autowired
     private GoodDao goodDao;
+
+    @Autowired
+    private RedisTools redisTools;
 
     public void sell(int id) {
         int res = goodDao.sell(id);
@@ -46,6 +51,17 @@ public class GoodService {
             //没库存了，直接退出
         } else {
             logger.info("empty... exit");
+        }
+    }
+
+    public void decreaseStorageWithRedis(String goodName) throws NoStorageException {
+        boolean result = false;
+        result = redisTools.decreaseValue(goodName);
+        if(result) {
+            logger.info("decrease storage successfully");
+        } else {
+            logger.error("no storage");
+            throw new NoStorageException("no storage, exit");
         }
     }
 }
