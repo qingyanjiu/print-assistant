@@ -1,4 +1,4 @@
-package site.moku.printassistant.utils;
+package site.moku.printassistant.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;

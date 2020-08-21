@@ -1,4 +1,4 @@
-package site.moku.printassistant.dao;
+package site.moku.printassistant.redis;
 
 import org.apache.ibatis.annotations.Mapper;
 

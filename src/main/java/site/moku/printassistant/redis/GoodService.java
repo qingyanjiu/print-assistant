@@ -1,12 +1,10 @@
-package site.moku.printassistant.service;
+package site.moku.printassistant.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import site.moku.printassistant.dao.GoodDao;
 import site.moku.printassistant.utils.NoStorageException;
-import site.moku.printassistant.utils.RedisTools;
 
 import java.util.HashMap;
 import java.util.Map;

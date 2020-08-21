@@ -1,4 +1,4 @@
-package site.moku.printassistant.controller;
+package site.moku.printassistant.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import site.moku.printassistant.dao.GoodDao;
-import site.moku.printassistant.service.GoodService;
 import site.moku.printassistant.utils.NoStorageException;
 
 @Controller
