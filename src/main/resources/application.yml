@@ -4,6 +4,12 @@ spring:
   thymeleaf:
     cache: false
     check-template: true
+#  cache:
+#    cache-names:
+#      - cache
+#    redis:
+#      time-to-live: 60000
+
   redis:
     host: 106.75.14.33
     database: 0

@@ -6,10 +6,12 @@ package site.moku.printassistant.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -34,5 +36,10 @@ public class PrintInfoService implements IPrintInfoService {
     @Override
     public Set<String> getHistoryFromRedis() {
         return stringRedisTemplate.keys("*");
+    }
+
+    @Cacheable(value = "test",key = "'testcache'")
+    public int testCache() {
+        return ThreadLocalRandom.current().nextInt(10000);
     }
 }

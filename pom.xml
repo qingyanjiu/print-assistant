@@ -43,6 +43,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<!--springboot中的redis依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

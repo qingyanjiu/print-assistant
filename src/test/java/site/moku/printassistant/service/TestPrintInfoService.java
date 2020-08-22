@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -16,13 +17,16 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class TestPrintInfoService {
 
-    @MockBean
+//    @MockBean
+//    private IPrintInfoService printInfoService;
+
+    @Autowired
     private IPrintInfoService printInfoService;
 
 
     @Before
     public void setUp() throws Exception {
-        when(printInfoService.getHistoryFromRedis()).thenReturn(null);
+//        when(printInfoService.getHistoryFromRedis()).thenReturn(null);
     }
 
     @After
@@ -30,8 +34,18 @@ public class TestPrintInfoService {
     }
 
     @Test
+    public void testSaveToRedis() {
+        printInfoService.saveToRedis("gogo","testgogo");
+    }
+
+    @Test
     public void testGetHistoryFromRedis() {
         Assert.assertNull(printInfoService.getHistoryFromRedis());
         verify(printInfoService,times(1)).getHistoryFromRedis();
+    }
+
+    @Test
+    public void testTestCache() {
+        System.out.println(printInfoService.testCache());
     }
 }

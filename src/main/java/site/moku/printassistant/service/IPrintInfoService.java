@@ -13,4 +13,6 @@ public interface IPrintInfoService {
     String getFromRedis(String printKey);
 
     Set<String> getHistoryFromRedis();
+
+    int testCache();
 }
