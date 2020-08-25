@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.moku.printassistant.dao.KafkaSaveDataDao">
+
+    <insert id="insert" parameterType="hashmap">
+        insert into pa.test_ins values(#{name},#{link},#{picture},#{length},#{play_times},#{v_date},#{author})
+    </insert>
+
+    <select id="qry" resultType="hashmap">
+        select * from pa.video_info
+    </select>
+
+</mapper>
