@@ -111,3 +111,6 @@ print:
   history:
     expire:
       days: 7
+
+#logging:
+#  path: /root/logs
