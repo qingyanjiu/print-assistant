@@ -27,6 +27,13 @@ public class KafkaContoller {
         return ResponseEntity.ok("success");
     }
 
+    @RequestMapping("produceBatchMessage")
+    @ResponseBody
+    public ResponseEntity produceBatchMessage(String msg) {
+        producerService.produceBatchMessage(msg);
+        return ResponseEntity.ok("success");
+    }
+
     @RequestMapping("kafkaSaveData")
     @ResponseBody
     public ResponseEntity kafkaSaveData(Map params) {

@@ -15,11 +15,13 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.Duration;
 
 @SpringBootApplication
 @EnableCaching
+@EnableScheduling
 public class PrintAssistantApplication {
 
 	public static void main(String[] args) {

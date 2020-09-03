@@ -31,7 +31,7 @@ public class KafkaConsumerDataToDB {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @KafkaListener(groupId = "group", topicPartitions = {@TopicPartition(topic = "test", partitions = {"0"})})
+    @KafkaListener(groupId = "save-to-db", topicPartitions = {@TopicPartition(topic = "test", partitions = {"0"})})
     public void consumeTest(ConsumerRecord consumerRecord) {
         logger.info("*************** consumed *************get from topic {}, partition {}, value {}", consumerRecord.topic(), consumerRecord.partition(), consumerRecord.value());
         try {

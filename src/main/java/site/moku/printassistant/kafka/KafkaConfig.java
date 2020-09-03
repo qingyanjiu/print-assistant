@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerContainerFactory;
+import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.ContainerProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,21 +26,29 @@ public class KafkaConfig {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${spring.kafka.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrap.servers}")
     private String bootstrapServers;
 
-    @Value("${spring.kafka.consumer.enable-auto-commit}")
+    @Value("${spring.kafka.consumer.enable.auto.commit}")
     private Boolean autoCommit;
 
-    @Value("${spring.kafka.consumer.auto-commit-interval}")
+    @Value("${spring.kafka.consumer.auto.commit.interval.ms}")
     private Integer autoCommitInterval;
 
-    @Value("${spring.kafka.consumer.group-id}")
+    @Value("${spring.kafka.consumer.session.timeout.ms}")
+    private Integer sessionTimeout;
+
+    @Value("${spring.kafka.consumer.request.timeout.ms}")
+    private Integer requestTimeout;
+
+    @Value("${spring.kafka.consumer.group.id}")
     private String groupId;
 
-
-    @Value("${spring.kafka.consumer.auto-offset-reset}")
+    @Value("${spring.kafka.consumer.auto.offset.reset}")
     private String autoOffsetReset;
+
+    @Value("${spring.kafka.consumer.max.poll.records}")
+    private String maxPollRecords;
 
     /**
      * 消息发送失败重试次数
@@ -53,26 +63,8 @@ public class KafkaConfig {
     /**
      * 缓存容量
      */
-    @Value("${spring.kafka.producer.buffer-memory}")
+    @Value("${spring.kafka.producer.buffer.memory}")
     private int bufferMemory;
-
-    /**
-     * 消费者配置信息
-     */
-    @Bean
-    public Map<String, Object> consumerConfigs() {
-        logger.info("Kafka消费者配置");
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 120000);
-        props.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, 180000);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        return props;
-    }
-
 
     /**
      * 生产者相关配置
@@ -86,28 +78,55 @@ public class KafkaConfig {
         props.put(ProducerConfig.RETRIES_CONFIG, retries);
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, bufferMemory);
+        props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 180000);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 //        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, MyPartitioner.class);
         return props;
     }
 
-    /**
-     * 生产者创建工厂
-     *
-     * @return
-     */
-    public ProducerFactory<String, String> producerFactory() {
+    private ProducerFactory<String, String> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     /**
      * kafkaTemplate 覆盖默认配置类中的kafkaTemplate
-     *
-     * @return
      */
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<String, String>(producerFactory());
+    }
+
+    @Bean
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        factory.setBatchListener(true);
+        // 此处并发度设置的都是Consumer个数，可以设置1到partition总数,
+        // 但是，所有机器实例上总的并发度之和必须小于等于partition总数
+        // 如果，总的并发度小于partition总数，有一个Consumer实例会消费超过一个以上partition
+        factory.setConcurrency(2);
+        //消费者设置手动ack的时候，不能设置自动提交ack
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+        return factory;
+    }
+
+    public ConsumerFactory<String, Object> consumerFactory() {
+        return new DefaultKafkaConsumerFactory(consumerConfigs());
+    }
+
+    private Map<String, Object> consumerConfigs() {
+        Map<String, Object> propsMap = new HashMap<>();
+        propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoCommit);
+        propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, sessionTimeout);
+        propsMap.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, requestTimeout);
+        propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
+        propsMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
+        return propsMap;
     }
 }
