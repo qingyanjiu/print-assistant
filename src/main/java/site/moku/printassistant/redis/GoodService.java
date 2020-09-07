@@ -3,9 +3,11 @@ package site.moku.printassistant.redis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import site.moku.printassistant.utils.NoStorageException;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,4 +64,11 @@ public class GoodService {
             throw new NoStorageException("no storage, exit");
         }
     }
+
+    @Cacheable(value = "goods",key = "#goodsId", unless = "#result == null")
+    public String qryGoodsInfo(String goodsId) {
+        Map<String, String> goods = Collections.singletonMap("1","testGood");
+        return goods.get(goodsId);
+    }
+
 }

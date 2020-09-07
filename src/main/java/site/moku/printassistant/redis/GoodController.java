@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import site.moku.printassistant.utils.NoStorageException;
 
+import java.util.Collections;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/good")
 public class GoodController {
