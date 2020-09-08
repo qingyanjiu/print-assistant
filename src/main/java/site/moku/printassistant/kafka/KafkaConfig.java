@@ -179,7 +179,7 @@ public class KafkaConfig {
         propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
         propsMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
         propsMap.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, maxPollInterval);
-        propsMap.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_uncommitted");
+        propsMap.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, isolationLevel);
         return propsMap;
     }
 }
