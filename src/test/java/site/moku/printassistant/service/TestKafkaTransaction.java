@@ -6,17 +6,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import site.moku.printassistant.kafka.MyKafkaConsumerMulti;
+import site.moku.printassistant.kafka.ProducerService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TestKafkaTransaction {
 
     @Autowired
-    private KafkaTemplate kafkaTemplate;
+    private ProducerService producerService;
+
+    @MockBean
+    private MyKafkaConsumerMulti myKafkaConsumerMulti;
 
     @Before
     public void setUp() throws Exception {
@@ -27,11 +30,8 @@ public class TestKafkaTransaction {
     }
 
     @Test
-    @Transactional
     public void testTransaction() {
-        kafkaTemplate.send("test","transaction!");
-        kafkaTemplate.send("test","transaction!transaction!");
-//        throw new UnsupportedOperationException();
+        producerService.transactionProduce();
     }
 
 

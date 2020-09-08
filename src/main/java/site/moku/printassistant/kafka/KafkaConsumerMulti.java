@@ -36,7 +36,7 @@ public abstract class KafkaConsumerMulti implements ApplicationListener<Applicat
             new ThreadPoolExecutor.CallerRunsPolicy()
     );
 
-    @KafkaListener(groupId = "multi-thread", topics = {"test"}, containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(groupId = "multi", topics = {"test"}, containerFactory = "kafkaListenerContainerFactory")
     public void consumeTest(List<ConsumerRecord> consumerRecords, Acknowledgment ack) {
 
         int size = consumerRecords.size();

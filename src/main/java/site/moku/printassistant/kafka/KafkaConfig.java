@@ -8,16 +8,21 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.transaction.ChainedKafkaTransactionManager;
 import org.springframework.kafka.transaction.KafkaTransactionManager;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +56,12 @@ public class KafkaConfig {
     @Value("${spring.kafka.consumer.max.poll.records}")
     private String maxPollRecords;
 
+    @Value("${spring.kafka.consumer.max.poll.interval}")
+    private String maxPollInterval;
+
+    @Value("${spring.kafka.consumer.properties.isolation.level}")
+    private String isolationLevel;
+
     /**
      * 消息发送失败重试次数
      */
@@ -72,9 +83,9 @@ public class KafkaConfig {
      *
      * @return
      */
-    public Map<String, Object> producerConfigs() {
+    private Map<String, Object> producerConfigs() {
         logger.info("Kafka生产者配置");
-        Map<String, Object> props = new HashMap<>(6);
+        Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.RETRIES_CONFIG, retries);
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
@@ -86,17 +97,37 @@ public class KafkaConfig {
         return props;
     }
 
-    @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    private Map<String, Object> producerWithTransactionConfigs() {
+        logger.info("支持事务的Kafka生产者配置");
+        Map<String, Object> props = new HashMap<>();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ProducerConfig.RETRIES_CONFIG, 3);
+        props.put(ProducerConfig.ACKS_CONFIG, "all");
+        props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, bufferMemory);
+        props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 180000);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        return props;
+    }
+
+    private ProducerFactory<String, String> producerFactory() {
         DefaultKafkaProducerFactory producerFactory = new DefaultKafkaProducerFactory<>(producerConfigs());
-        producerFactory.transactionCapable();
-        producerFactory.setTransactionIdPrefix("trans-");
         return producerFactory;
     }
 
     @Bean
-    public KafkaTransactionManager transactionManager(ProducerFactory producerFactory) {
-        KafkaTransactionManager manager = new KafkaTransactionManager(producerFactory);
+    public ProducerFactory<String, String> producerFactoryWithTransaction() {
+        DefaultKafkaProducerFactory producerFactory = new DefaultKafkaProducerFactory<>(producerWithTransactionConfigs());
+        producerFactory.transactionCapable();
+        producerFactory.setTransactionIdPrefix("tx-");
+        return producerFactory;
+    }
+
+    @Bean
+    public KafkaTransactionManager transactionManager() {
+        KafkaTransactionManager manager = new KafkaTransactionManager(producerFactoryWithTransaction());
         return manager;
     }
 
@@ -104,8 +135,17 @@ public class KafkaConfig {
      * kafkaTemplate 覆盖默认配置类中的kafkaTemplate
      */
     @Bean
+    @Primary
     public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<String, String>(producerFactory());
+    }
+
+    /**
+     * kafkaTemplate 覆盖默认配置类中的kafkaTemplate
+     */
+    @Bean
+    public KafkaTemplate<String, String> kafkaTemplateWithTransaction() {
+        return new KafkaTemplate<String, String>(producerFactoryWithTransaction());
     }
 
     @Bean
@@ -138,6 +178,8 @@ public class KafkaConfig {
         propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
         propsMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
+        propsMap.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, maxPollInterval);
+        propsMap.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_uncommitted");
         return propsMap;
     }
 }

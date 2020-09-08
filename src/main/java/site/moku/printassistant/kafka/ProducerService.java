@@ -1,24 +1,19 @@
 package site.moku.printassistant.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import site.moku.printassistant.dao.KafkaSaveDataDao;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +28,10 @@ public class ProducerService {
 
     @Autowired
     private KafkaTemplate kafkaTemplate;
+
+    @Autowired
+    @Qualifier("kafkaTemplateWithTransaction")
+    private KafkaTemplate kafkaTemplateWithTransaction;
 
     @Autowired
     private KafkaSaveDataDao dao;
@@ -71,13 +70,13 @@ public class ProducerService {
 //                            logger.error("send message to kafka failed, result:{}", throwable.getCause());
 //                        }
 //                    });
-                    kafkaTemplate.send("test", msg+_i);
+                    kafkaTemplate.send("test", msg + _i);
                 });
             }
         } finally {
             es.shutdown();
             try {
-                if(!es.awaitTermination(20, TimeUnit.SECONDS)) {
+                if (!es.awaitTermination(20, TimeUnit.SECONDS)) {
                     logger.warn("can't shutdown thread pool... force shut down");
                     es.shutdownNow();
                 }
@@ -98,6 +97,14 @@ public class ProducerService {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Transactional
+    public void transactionProduce() {
+        kafkaTemplateWithTransaction.send("test", "transaction!");
+        kafkaTemplateWithTransaction.send("test", "transaction!");
+        kafkaTemplateWithTransaction.send("test", "transaction!");
+        System.out.println(1/0);
     }
 
 }
