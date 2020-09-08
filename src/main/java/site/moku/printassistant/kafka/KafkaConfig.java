@@ -16,6 +16,7 @@ import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.transaction.KafkaTransactionManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,8 +86,18 @@ public class KafkaConfig {
         return props;
     }
 
-    private ProducerFactory<String, String> producerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs());
+    @Bean
+    public ProducerFactory<String, String> producerFactory() {
+        DefaultKafkaProducerFactory producerFactory = new DefaultKafkaProducerFactory<>(producerConfigs());
+        producerFactory.transactionCapable();
+        producerFactory.setTransactionIdPrefix("trans-");
+        return producerFactory;
+    }
+
+    @Bean
+    public KafkaTransactionManager transactionManager(ProducerFactory producerFactory) {
+        KafkaTransactionManager manager = new KafkaTransactionManager(producerFactory);
+        return manager;
     }
 
     /**
