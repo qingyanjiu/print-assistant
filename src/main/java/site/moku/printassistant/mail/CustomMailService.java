@@ -3,6 +3,7 @@ package site.moku.printassistant.mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Profile("mail")
 public class CustomMailService extends AbstractMailService {
 
     private final Logger logger = LoggerFactory.getLogger(CustomMailService.class);
