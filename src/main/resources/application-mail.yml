@@ -7,7 +7,7 @@ spring:
   mail:
     host: smtp.126.com
     username: qingyanjiu@126.com
-    password: ENC(ueZzHVulwLBka9pRqCWRiFsK9Hg+4N7mWhK/JVXPgdA=)
+    password: ENC(BOMWFxiKO6LxN80M9G6IL/KQFB/M8fkzvKJmIofYGfQ=)
     from: testFrom
     port: 25
     properties:
