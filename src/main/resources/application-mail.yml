@@ -1,0 +1,28 @@
+spring:
+  mail:
+    host: smtp.126.com
+    username: qingyanjiu@126.com
+    password: ZRZZVDEVLRRLZGXP
+    from: testFrom
+    port: 25
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  freemarker:
+    template-loader-path:
+      - classpath:templates/freemarker/
+    suffix: .ftl
+    enabled: true
+    cache: false
+    charset: UTF-8
+    content-type: text/html
+    allow-request-override: false
+    check-template-location: true
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: false
+
