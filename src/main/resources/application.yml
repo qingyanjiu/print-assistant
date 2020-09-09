@@ -83,7 +83,10 @@ spring:
           interval: 15000
       properties:
         isolation:
+          #设置为读未提交，在事务没提交的时候生产者数据就被读取了
           level: read_uncommitted
+          #设置为读已提交，会只读取提交的记录
+#          level: read_committed
         # Kafka提供的序列化和反序列化类
         #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
         #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

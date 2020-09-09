@@ -101,10 +101,16 @@ public class ProducerService {
 
     @Transactional
     public void transactionProduce() {
-        kafkaTemplateWithTransaction.send("test", "transaction!");
-        kafkaTemplateWithTransaction.send("test", "transaction!");
-        kafkaTemplateWithTransaction.send("test", "transaction!");
-        System.out.println(1/0);
+        try {
+            kafkaTemplateWithTransaction.send("test", "transaction!");
+            Thread.sleep(5000);
+            kafkaTemplateWithTransaction.send("test", "transaction111!");
+            Thread.sleep(5000);
+            kafkaTemplateWithTransaction.send("test", "transaction333!");
+//        System.out.println(1/0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
