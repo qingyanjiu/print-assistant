@@ -1,8 +1,13 @@
+jasypt:
+  encryptor:
+    password: viper111@5851
+    algorithm: PBEWithMD5AndDES
+
 spring:
   mail:
     host: smtp.126.com
     username: qingyanjiu@126.com
-    password: ZRZZVDEVLRRLZGXP
+    password: ENC(ueZzHVulwLBka9pRqCWRiFsK9Hg+4N7mWhK/JVXPgdA=)
     from: testFrom
     port: 25
     properties:
