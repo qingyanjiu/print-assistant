@@ -1,4 +1,4 @@
-package site.moku.printassistant.service;
+package site.moku.printassistant.print.service;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -8,20 +8,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import site.moku.printassistant.kafka.ProducerService;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestProducerService {
+public class TestPrintInfoService {
 
 //    @MockBean
 //    private IPrintInfoService printInfoService;
 
     @Autowired
-    private ProducerService service;
+    private IPrintInfoService printInfoService;
 
 
     @Before
@@ -34,8 +32,18 @@ public class TestProducerService {
     }
 
     @Test
-    public void testProduceSaveData() {
-        service.produceSaveData();
+    public void testSaveToRedis() {
+        printInfoService.saveToRedis("gogo","testgogo");
     }
 
+    @Test
+    public void testGetHistoryFromRedis() {
+        Assert.assertNull(printInfoService.getHistoryFromRedis());
+        verify(printInfoService,times(1)).getHistoryFromRedis();
+    }
+
+    @Test
+    public void testTestCache() {
+        System.out.println(printInfoService.testCache());
+    }
 }

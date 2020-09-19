@@ -2,7 +2,7 @@
  * @author louisliu
  */
 
-package site.moku.printassistant.service;
+package site.moku.printassistant.print.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

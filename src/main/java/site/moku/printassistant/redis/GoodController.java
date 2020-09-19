@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import site.moku.printassistant.utils.NoStorageException;
-
-import java.util.Collections;
-import java.util.Map;
+import site.moku.printassistant.print.utils.NoStorageException;
 
 @Controller
 @RequestMapping("/good")

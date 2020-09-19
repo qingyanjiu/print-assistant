@@ -1,4 +1,4 @@
-package site.moku.printassistant.controller;
+package site.moku.printassistant.print.controller;
 
 import org.junit.After;
 import org.junit.Before;

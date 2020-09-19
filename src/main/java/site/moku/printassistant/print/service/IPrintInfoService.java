@@ -2,7 +2,7 @@
  * @author louisliu
  */
 
-package site.moku.printassistant.service;
+package site.moku.printassistant.print.service;
 
 import java.util.Set;
 

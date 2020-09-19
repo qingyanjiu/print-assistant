@@ -2,7 +2,7 @@
  * @author louisliu
  */
 
-package site.moku.printassistant.vo;
+package site.moku.printassistant.print.vo;
 
 public class CardPrinterParams {
 

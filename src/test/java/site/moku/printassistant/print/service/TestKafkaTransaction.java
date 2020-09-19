@@ -1,4 +1,4 @@
-package site.moku.printassistant.service;
+package site.moku.printassistant.print.service;
 
 import org.junit.After;
 import org.junit.Before;
@@ -7,19 +7,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import site.moku.printassistant.kafka.MyKafkaConsumerMulti;
 import site.moku.printassistant.kafka.ProducerService;
-import site.moku.printassistant.mail.CustomMailService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("mail")
-public class TesMail {
+public class TestKafkaTransaction {
 
     @Autowired
-    private CustomMailService customMailService;
+    private ProducerService producerService;
 
     @MockBean
     private MyKafkaConsumerMulti myKafkaConsumerMulti;
@@ -33,8 +30,9 @@ public class TesMail {
     }
 
     @Test
-    public void testSendMail() {
-        customMailService.sendMail();
+    public void testTransaction() {
+        producerService.transactionProduce();
     }
+
 
 }

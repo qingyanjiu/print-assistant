@@ -1,4 +1,4 @@
-package site.moku.printassistant.utils;
+package site.moku.printassistant.print.utils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

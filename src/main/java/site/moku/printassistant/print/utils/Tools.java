@@ -2,7 +2,7 @@
  * @author louisliu
  */
 
-package site.moku.printassistant.utils;
+package site.moku.printassistant.print.utils;
 
 import sun.misc.BASE64Encoder;
 
