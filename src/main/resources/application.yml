@@ -23,9 +23,14 @@ spring:
         min-idle: 1 #连接池中最小空闲连接
 
   kafka:
+    ssl:
+      truststore-location: classpath:/trustStore/client.truststore.jks
+      trust-store-password: 19831226lc
+      trust-store-type: JKS
+
     ###########【Kafka集群】###########
     bootstrap:
-      servers: 106.75.14.33:9092
+      servers: 106.75.14.33:9093
     ###########【初始化生产者配置】###########
     # 重试次数
     producer:

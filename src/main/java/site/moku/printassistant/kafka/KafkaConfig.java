@@ -8,21 +8,18 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.AbstractMessageListenerContainer;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.transaction.ChainedKafkaTransactionManager;
 import org.springframework.kafka.transaction.KafkaTransactionManager;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +58,15 @@ public class KafkaConfig {
 
     @Value("${spring.kafka.consumer.properties.isolation.level}")
     private String isolationLevel;
+
+    @Value("${spring.kafka.ssl.truststore-location}")
+    private String truststoreLocation;
+
+    @Value("${spring.kafka.ssl.trust-store-password}")
+    private String truststorePassword;
+
+    @Value("${spring.kafka.ssl.trust-store-type}")
+    private String truststoreType;
 
     /**
      * 消息发送失败重试次数
@@ -180,6 +186,10 @@ public class KafkaConfig {
         propsMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
         propsMap.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, maxPollInterval);
         propsMap.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, isolationLevel);
+        propsMap.put("security.protocol", "SSL");
+        propsMap.put("ssl.truststore.location", truststoreLocation);
+        propsMap.put("ssl.truststore.password", truststorePassword);
+        propsMap.put("ssl.truststore.type", truststoreType);
         return propsMap;
     }
 }
