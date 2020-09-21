@@ -20,6 +20,7 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.transaction.KafkaTransactionManager;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,6 +68,9 @@ public class KafkaConfig {
 
     @Value("${spring.kafka.ssl.trust-store-type}")
     private String truststoreType;
+
+    @Value("${spring.kafka.ssl.endpoint.identification.algorithm}")
+    private String endpointIdentificationAlgorithm;
 
     /**
      * 消息发送失败重试次数
@@ -187,9 +191,10 @@ public class KafkaConfig {
         propsMap.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, maxPollInterval);
         propsMap.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, isolationLevel);
         propsMap.put("security.protocol", "SSL");
-        propsMap.put("ssl.truststore.location", truststoreLocation);
+        propsMap.put("ssl.truststore.location", this.getClass().getClassLoader().getResource("").getPath()+truststoreLocation);
         propsMap.put("ssl.truststore.password", truststorePassword);
         propsMap.put("ssl.truststore.type", truststoreType);
+        propsMap.put("ssl.endpoint.identification.algorithm", endpointIdentificationAlgorithm);
         return propsMap;
     }
 }

@@ -24,9 +24,12 @@ spring:
 
   kafka:
     ssl:
-      truststore-location: classpath:/trustStore/client.truststore.jks
+      truststore-location: truststore/client.truststore.jks
       trust-store-password: 19831226lc
       trust-store-type: JKS
+      endpoint:
+        identification:
+          algorithm: ""
 
     ###########【Kafka集群】###########
     bootstrap:
