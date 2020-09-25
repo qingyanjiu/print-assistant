@@ -1,22 +1,19 @@
 package site.moku.printassistant.print.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
-import java.util.Set;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 import site.moku.printassistant.kafka.MyKafkaConsumerMulti;
 import site.moku.printassistant.redis.GoodService;
 
-@RunWith(SpringRunner.class)
+import java.util.Set;
+
 @SpringBootTest
 public class TestGoodsCache {
 
@@ -29,11 +26,11 @@ public class TestGoodsCache {
   @Autowired
   private StringRedisTemplate redisTemplate;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
   }
 

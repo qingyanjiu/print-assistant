@@ -1,17 +1,12 @@
 package site.moku.printassistant.print.service;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import site.moku.printassistant.kafka.ProducerService;
 
-import static org.mockito.Mockito.verify;
-
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class TestProducerService {
 
@@ -22,12 +17,12 @@ public class TestProducerService {
     private ProducerService service;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 //        when(printInfoService.getHistoryFromRedis()).thenReturn(null);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 

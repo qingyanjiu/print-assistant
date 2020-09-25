@@ -1,0 +1,132 @@
+spring:
+  application:
+    name: print-assistant
+  thymeleaf:
+    cache: false
+    check-template: true
+  #  cache:
+  #    cache-names:
+  #      - cache
+  #    redis:
+  #      time-to-live: 60000
+
+  redis:
+    host: 106.75.14.33
+    database: 0
+    port: 36379
+    timeout: 120000
+    lettuce:
+      pool:
+        max-active: 10 #连接池最大连接数
+        max-wait: -1 #连接池最大阻塞时间
+        max-idle: 5 #连接池中最大空闲连接
+        min-idle: 1 #连接池中最小空闲连接
+
+  kafka:
+    ssl:
+      truststore-location: truststore/client.truststore.jks
+      trust-store-password: 19831226lc
+      trust-store-type: JKS
+      endpoint:
+        identification:
+          algorithm: ""
+
+    ###########【Kafka集群】###########
+    bootstrap:
+      servers: 106.75.14.33:9093
+    ###########【初始化生产者配置】###########
+    # 重试次数
+    producer:
+#      transaction-id-prefix: tx-
+      retries: 1
+      # 应答级别:多少个分区副本备份完成时向生产者发送ack确认(可选0、1、all/-1)
+      acks: 1
+      # 批量大小
+      batch-size: 16384
+      # 提交延时
+      linger: 0
+      # 当生产端积累的消息达到batch-size或接收到消息linger.ms后,生产者就会将消息提交给kafkakafkaTransactionManager
+      # linger.ms为0表示每接收到一条消息就提交给kafka,这时候batch-size其实就没用了
+
+      # 生产端缓冲区大小
+      buffer:
+        memory: 33554432
+      # Kafka提供的序列化和反序列化类
+      #      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      #      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 自定义分区器
+    #        partitioner:
+    #          class: com.felix.kafka.producer.CustomizePartitioner
+
+    ###########【初始化消费者配置】###########
+    # 默认的消费组ID
+    consumer:
+      group:
+        id: defaultConsumerGroup
+      # 消费会话超时时间(超过这个时间consumer没有发送心跳,就会触发rebalance操作)
+      session:
+        timeout:
+          ms: 120000
+      request:
+        timeout:
+          ms: 180000
+      # 是否自动提交offset
+      enable:
+        auto:
+          commit: false
+      # 提交offset延时(接收到消息后多久提交offset)
+      auto:
+        commit:
+          interval:
+            ms: 1000
+        # 当kafka中没有初始offset或offset超出范围时将自动重置offset
+        # earliest:重置为分区中最小的offset;
+        # latest:重置为分区中最新的offset(消费分区中新产生的数据);
+        # none:只要有一个分区不存在已提交的offset,就抛出异常;
+        offset:
+          reset: latest
+      max:
+        poll:
+          records: 500
+          interval: 15000
+      properties:
+        isolation:
+          #设置为读未提交，在事务没提交的时候生产者数据就被读取了
+#          level: read_uncommitted
+          #设置为读已提交，会只读取提交的记录
+          level: read_committed
+        # Kafka提供的序列化和反序列化类
+        #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        # 批量消费每次最多消费多少条消息
+      #      max-poll-records: 50
+      # 设置批量消费
+  #    listener:
+  #      type: batch
+
+  datasource:
+    username: root
+    password: 19831226lc
+    url: jdbc:mysql://pass.moku.site:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: site.moku.printassistant.dao
+
+server:
+  port: 8000
+  tomcat:
+    max-http-post-size: -1
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+
+print:
+  history:
+    expire:
+      days: 7
+
+#logging:
+#  path: /root/logs

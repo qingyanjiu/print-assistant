@@ -1,17 +1,15 @@
 package site.moku.printassistant.print.service;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class TestPrintInfoService {
 
@@ -22,12 +20,12 @@ public class TestPrintInfoService {
     private IPrintInfoService printInfoService;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 //        when(printInfoService.getHistoryFromRedis()).thenReturn(null);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 
@@ -38,7 +36,7 @@ public class TestPrintInfoService {
 
     @Test
     public void testGetHistoryFromRedis() {
-        Assert.assertNull(printInfoService.getHistoryFromRedis());
+        Assertions.assertNull(printInfoService.getHistoryFromRedis());
         verify(printInfoService,times(1)).getHistoryFromRedis();
     }
 
