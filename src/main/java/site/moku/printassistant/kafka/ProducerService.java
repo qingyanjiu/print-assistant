@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@Service
+//@Service
 public class ProducerService {
 
     private final Logger logger = LoggerFactory.getLogger(ProducerService.class);

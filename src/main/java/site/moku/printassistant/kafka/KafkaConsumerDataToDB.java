@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 
-@Component
+//@Component
 @ConditionalOnProperty(prefix = "consumer-mode", value = "enabled", havingValue = "true", matchIfMissing = false)
 public class KafkaConsumerDataToDB {
 

@@ -11,10 +11,10 @@ spring:
   #      time-to-live: 60000
 
   redis:
-    host: 106.75.14.33
+    host: 192.168.99.100
     database: 0
     port: 36379
-    timeout: 120000
+    timeout: 30000
     lettuce:
       pool:
         max-active: 10 #连接池最大连接数
@@ -127,6 +127,7 @@ print:
   history:
     expire:
       days: 7
+
 
 #logging:
 #  path: /root/logs

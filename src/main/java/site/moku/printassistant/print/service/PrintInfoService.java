@@ -17,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class PrintInfoService implements IPrintInfoService {
 
+    private static final String PREFIX = "print::";
+
     @Value("${print.history.expire.days}")
     private long expireDays;
 
@@ -25,7 +27,7 @@ public class PrintInfoService implements IPrintInfoService {
 
     @Override
     public void saveToRedis(String printKey, String content) {
-        stringRedisTemplate.opsForValue().set(printKey, content, expireDays, TimeUnit.DAYS);
+        stringRedisTemplate.opsForValue().set(PREFIX.concat(printKey), content, expireDays, TimeUnit.DAYS);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class PrintInfoService implements IPrintInfoService {
 
     @Override
     public Set<String> getHistoryFromRedis() {
-        return stringRedisTemplate.keys("*");
+        return stringRedisTemplate.keys(PREFIX.concat("*"));
     }
 
     @Cacheable(value = "test",key = "'testcache'")

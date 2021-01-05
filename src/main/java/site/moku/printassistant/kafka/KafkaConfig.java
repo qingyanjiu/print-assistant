@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 @EnableKafka
 public class KafkaConfig {
 

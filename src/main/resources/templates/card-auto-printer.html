@@ -35,7 +35,9 @@
     var bleedWidth = getParam("bleedWidth");
     var leftOffset = getParam("leftOffset");
 
-    var defaultWidth = 297;
+    var savedPage = getParam("history");
+
+    var defaultWidth = 298;
     var defaultHeight = 210;
 
     var imgs = [];
@@ -43,6 +45,24 @@
     imgs = [[${imgs}]];
 
     $(function(){
+
+        if(savedPage == null) {
+        }
+        else if(savedPage.indexOf("print::") != -1) {
+            $.ajax({
+                url: 'get-history',
+                type: 'POST',
+                data: {
+                    printKey: savedPage
+                },
+                success: function (res) {
+                    $("html").html(res);
+                },
+                error: function (e) {
+                    swal('读取失败,请重试');
+                }
+            });
+        }
 
         $("body").css("background",'#'+bleedColor);
 
@@ -60,7 +80,7 @@
                         type: 'POST',
                         data: {
                             printKey: value,
-                            imgListJsonStr: JSON.stringify(imgs)
+                            pageHtml: $("html").html()
                         },
                         dataType: "json",
                         success: function (res) {

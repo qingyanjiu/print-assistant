@@ -10,7 +10,7 @@ import site.moku.printassistant.dao.KafkaSaveDataDao;
 import java.sql.SQLException;
 import java.util.Map;
 
-@Controller
+//@Controller
 @RequestMapping("/")
 public class KafkaContoller {
 

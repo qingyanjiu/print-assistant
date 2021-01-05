@@ -22,7 +22,6 @@
 <body>
 <div class="well" style="padding:2rem;text-align: center;opacity: 0.6">
     <button id="card-print" type="button" class="btn btn-primary">打印卡片</button>
-    <button id="book-print" type="button" class="btn btn-success">打印绘本</button>
 </div>
 </body>
 <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
@@ -34,10 +33,6 @@
     $(function(){
         $("#card-print").click(function(){
             document.location = "/print/card/options";
-        });
-
-        $("#book-print").click(function(){
-            document.location = "/print/book/options";
         });
     });
 
