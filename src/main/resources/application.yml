@@ -11,7 +11,7 @@ spring:
   #      time-to-live: 60000
 
   redis:
-    host: 192.168.99.100
+    host: pass.mokmok.xyz
     database: 0
     port: 36379
     timeout: 30000
