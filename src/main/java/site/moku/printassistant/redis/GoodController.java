@@ -56,16 +56,23 @@ public class GoodController {
             String res = "";
             while(true) {
                 res = stringRedisTemplate.opsForList().leftPop("topic1");
-                os.write(res.getBytes());
+                if(res != null) {
+                    os.write(res.getBytes());
+                    return;
+                }
+                Thread.sleep(1000);
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     @RequestMapping("push")
+    @ResponseBody
     public ResponseEntity pushMessage(String text) {
         stringRedisTemplate.opsForList().rightPush("topic1", text);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.noContent().build();
     }
 }
