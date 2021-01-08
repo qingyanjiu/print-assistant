@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,14 +52,18 @@ public class GoodController {
 
     @RequestMapping(path = "pull", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux pullMessage() {
-        Flux res = Flux.interval(Duration.ofSeconds(1)).map(f -> {
+        Flux res = Flux.interval(Duration.ofSeconds(3)).map(f -> {
             String r = stringRedisTemplate.opsForList().leftPop("topic1");
             if (r != null) {
                 return r;
             } else {
                 return "";
             }
-        });
+        }).map(data -> ServerSentEvent.builder()
+                .event("messageGot")
+                .id(data)
+                .data(data)
+                .build());
         return res;
     }
 

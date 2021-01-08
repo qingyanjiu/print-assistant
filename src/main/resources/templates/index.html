@@ -18,6 +18,7 @@
             margin:10rem 1rem 0 1rem;
         }
     </style>
+    <div id="result"></div>
 </head>
 <body>
 <div class="well" style="padding:2rem;text-align: center;opacity: 0.6">
@@ -34,7 +35,22 @@
         $("#card-print").click(function(){
             document.location = "/print/card/options";
         });
+
+        // getWebFluxData();
     });
+
+    function getWebFluxData() {
+        //记录加载次数
+        var time=1;
+        if (typeof (EventSource) !== "undefined") {
+            var source = new EventSource("/good/pull");
+            source.addEventListener("messageGot", function(e) {
+                $("#result").html($("#result").html()+e.data);
+            }, false);//使用false表示在冒泡阶段处理事件，而不是捕获阶段。
+        } else {
+            $("#result").html("抱歉，你的浏览器不支持 server-sent 事件...");
+        }
+    }
 
     //]]>
 </script>
