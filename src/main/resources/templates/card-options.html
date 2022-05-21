@@ -63,6 +63,12 @@
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
+                <span class="input-group-text">打印张数分割符</span>
+            </div>
+            <input id="splitter" value="-" type="text" class="form-control" placeholder="打印张数分割符" aria-label="打印张数分割符">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
                 <span class="input-group-text">打印份数</span>
             </div>
             <input id="times" value="1" type="text" class="form-control" placeholder="打印份数" aria-label="打印份数">
@@ -180,6 +186,7 @@
         var bleedWidth = $("#bleedWidth").val();
         var bleedColor = $("#bleedColor").val().split("#")[1];
         var leftOffset = $("#leftOffset").val();
+        var splitter = $("#splitter").val();
         if (path == '') {
             if(typeof(history) == 'undefined' || history == null) {
                 alert("请输入文件路径");
@@ -224,6 +231,7 @@
             "&bleedWidth=" + bleedWidth +
             "&bleedColor=" + bleedColor +
             "&leftOffset=" + leftOffset +
+            "&splitter=" + splitter +
             "&lineWidth=" + lineWidth;
         if(typeof(history) != 'undefined' && history != null) {
             openUrl += "&history=" + encodeURI(history);

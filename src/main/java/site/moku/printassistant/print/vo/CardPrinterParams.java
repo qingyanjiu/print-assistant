@@ -21,6 +21,7 @@ public class CardPrinterParams {
     private int leftOffset;
     private String reverse;
     private String bleedColor;
+    private String splitter;
 
     public String getReverse() {
         return reverse;
@@ -140,5 +141,13 @@ public class CardPrinterParams {
 
     public void setBleedColor(String bleedColor) {
         this.bleedColor = bleedColor;
+    }
+
+    public String getSplitter() {
+        return splitter;
+    }
+
+    public void setSplitter(String splitter) {
+        this.splitter = splitter;
     }
 }

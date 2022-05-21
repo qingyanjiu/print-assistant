@@ -63,6 +63,7 @@ public class CardPrintController {
             back = new File(printerParams.getBackPath());
         int startIndex = printerParams.getStart() - 1;
         int numberPerRow = printerParams.getNumberPerRow();
+        String numSplitter = printerParams.getSplitter();
         File file = new File(printerParams.getPath());
         if (file.isDirectory()) {
             File[] children = file.listFiles(name -> name.getName().startsWith(printerParams.getImgPrefix()));
@@ -72,7 +73,8 @@ public class CardPrintController {
                 if (child.isFile()) {
                     for (int i = 0; i < printerParams.getTimes(); i++) {
                         if (index >= startIndex) {
-                            if (child.getName().indexOf("-") == -1) {
+                            // 如果没有数字分隔符，就打印一张
+                            if (child.getName().indexOf(numSplitter) == -1) {
                                 Map map = new HashMap();
                                 String order = child.getName().split("\\.")[0];
                                 if (!StringUtils.isEmpty(printerParams.getImgPrefix())) {
@@ -82,8 +84,9 @@ public class CardPrintController {
 //                                    map.put("order", order);
                                 imgs.add(map);
                             } else {
+                                // 如果有数字分隔符，根据数字打印多张重复的
                                 Map map = new HashMap();
-                                int number = Integer.valueOf(child.getName().split("-")[1].split("\\.")[0]);
+                                int number = Integer.valueOf(child.getName().split(numSplitter)[1].split("\\.")[0]);
                                 String order = child.getName().split("-")[0];
                                 if (!StringUtils.isEmpty(printerParams.getImgPrefix())) {
                                     order = order.split(printerParams.getImgPrefix())[1];
