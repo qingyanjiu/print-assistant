@@ -4,7 +4,7 @@
 
 package site.moku.printassistant.print.utils;
 
-import sun.misc.BASE64Encoder;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +20,7 @@ public class Tools {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new BASE64Encoder().encode(buffer);
+        return Base64.encode(buffer);
 
     }
 }
