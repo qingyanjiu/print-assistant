@@ -67,7 +67,9 @@ public class CardPrintController {
         File file = new File(printerParams.getPath());
         if (file.isDirectory()) {
             File[] children = file.listFiles(name -> name.getName().startsWith(printerParams.getImgPrefix()));
-            List<File> childList = Arrays.asList(children);
+            List<File> childList = Arrays.asList(children).stream().filter(i -> !i.getName().contains("Thumbs"))
+                    .sorted(Comparator.comparingInt(o -> Integer.parseInt(o.getName().replaceAll("\\D", ""))))
+                    .collect(Collectors.toList());
             for (int index = 0; index < Math.min(childList.size(), total); index++) {
                 File child = childList.get(index);
                 if (child.isFile()) {

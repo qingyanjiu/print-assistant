@@ -1,5 +1,3 @@
-package site.moku.tools;
-
 import java.io.File;
 import java.util.Arrays;
 
@@ -12,7 +10,7 @@ public class ChangeName {
         if(file.isDirectory()) {
             File[] files = file.listFiles();
             Arrays.asList(files).forEach(item->{
-                if(item.getName().contains("20120601")) {
+                if(item.getName().contains(origin)) {
                     item.renameTo(new File(item.getAbsolutePath().replace(origin, dist)));
                 }
             });
